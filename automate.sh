@@ -8,8 +8,8 @@ rm -rf ./bin/*
 rustc -L . --edition=2018 --out-dir ./bin ./src/main.rs 
 ./bin/main
 
-# tsc --target esnext --lib esnext,dom ./web/index.ts --outDir ./bin
-# cp ./web/*{.html,.js} ./bin/
+tsc --target esnext --lib esnext,dom --outDir ./bin ./web/index.ts
+cp ./web/*{.html,.js} ./bin/
 
 
 # Run web server
