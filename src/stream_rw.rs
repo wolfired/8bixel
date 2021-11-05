@@ -129,3 +129,96 @@ impl StreamRW {
         self.cursor_w += payload.len();
     }
 }
+
+
+// struct IOHelper {
+//     buf_ptr: usize,
+//     buf_cap: usize,
+
+//     cursor_r: usize,
+//     cursor_w_ptr: usize,
+
+//     skipped_count_r: usize,
+//     skipped_count_w: usize,
+
+//     total_count_r: usize,
+//     total_count_w: usize,
+// }
+
+// impl IOHelper {
+//     fn new(buf_ptr: usize, cursor_w_ptr: usize, buf_cap: usize) -> Self {
+//         Self {
+//             buf_ptr,
+//             buf_cap,
+//             cursor_r: 0,
+//             cursor_w_ptr,
+//             skipped_count_r: 0,
+//             skipped_count_w: 0,
+//             total_count_r: 0,
+//             total_count_w: 0,
+//         }
+//     }
+
+//     fn read(&mut self) {
+//         let cursor_w;
+
+//         unsafe {
+//             cursor_w = *(self.cursor_w_ptr as *const usize);
+//         }
+
+//         let mut cursor_r = self.cursor_r % self.buf_cap;
+//         let gap_r = self.buf_cap - self.cursor_r;
+
+//         if 8 > gap_r {
+//             self.cursor_r += gap_r;
+//             self.skipped_count_r += gap_r;
+//         }
+
+//         let len = cursor_w - self.cursor_r;
+
+//         if 8 > len {
+//             return;
+//         }
+
+//         cursor_r = self.cursor_r % self.buf_cap;
+
+//         unsafe {
+//             let buf = self.buf_ptr + cursor_r;
+
+//             let id = u32::from_le(*(buf as *const u32).add(0));
+//             let count = u32::from_le(*(buf as *const u32).add(1));
+
+//             if count as usize > len - 8 {
+//                 return;
+//             }
+
+//             if 0 == id {
+//                 self.skipped_count_r += count as usize;
+//             } else {
+//                 if let Some(ref n) = N {
+//                     mylog(**n as isize);
+//                 }
+
+//                 if 10 == id {
+//                     let key = u32::from_le(*(buf as *const u32).add(2));
+//                     if let Some(ref mut g) = G {
+//                         match key {
+//                             65 => g.x -= 1,
+//                             68 => g.x += 1,
+//                             83 => g.y += 1,
+//                             87 => g.y -= 1,
+//                             _ => {}
+//                         }
+//                         g.set_pixel_color(g.x, g.y, 255, 0, 0, 255);
+//                     }
+//                 }
+
+//                 self.total_count_r += count as usize;
+//             }
+
+//             self.cursor_r += count as usize + 8;
+//         }
+//     }
+
+//     fn write(&mut self) {}
+// }

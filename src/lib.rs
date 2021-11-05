@@ -1,11 +1,11 @@
-#![crate_name = "index"]
+#![crate_name = "8bixel"]
 #![crate_type = "cdylib"]
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
 mod game;
 mod stream_rw;
-use game::{Game, G};
+use game;
 
 #[no_mangle]
 pub unsafe fn init(wid: isize, hei: isize, io_buf_cap: usize) -> usize {

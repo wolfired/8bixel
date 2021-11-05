@@ -135,17 +135,19 @@ class IOHelper {
   document.body.appendChild(can);
   can.style.display = "block";
   can.style.margin = "auto";
-  can.style.border = "0";
-  can.style.padding = "0";
-  can.style.width = wid + "px";
-  can.style.height = hei + "px";
-  can.width = Math.round(can.clientWidth * window.devicePixelRatio);
-  can.height = Math.round(can.clientHeight * window.devicePixelRatio);
+  can.style.border = "1px dashed gray";
+  can.style.padding = "0px";
+  can.style.width = 2 * wid + "px";
+  can.style.height = 2 * hei + "px";
+  can.style.imageRendering = "pixelated"
+  can.width = Math.round(wid * window.devicePixelRatio);
+  can.height = Math.round(hei * window.devicePixelRatio);
 
   const can_ctx2d = can.getContext("2d");
+  can_ctx2d.imageSmoothingEnabled = false;
 
   const { instance } = await WebAssembly.instantiateStreaming(
-    fetch("./index.wasm"),
+    fetch("./8bixel.wasm"),
     {
       env: {
         mylog: (value: number) => {
@@ -159,7 +161,7 @@ class IOHelper {
   const args_usize = new DataView(
     instance.exports.memory.buffer,
     args_usize_ptr,
-    24
+    20
   );
 
   const canvas_buf_ptr = args_usize.getUint32(0, true);
@@ -167,7 +169,6 @@ class IOHelper {
   const income_buf_ptr = args_usize.getUint32(8, true);
   const outgo_cursor_w_ptr = args_usize.getUint32(12, true);
   const income_cursor_w_ptr = args_usize.getUint32(16, true);
-  const N_ptr = args_usize.getUint32(20, true);
 
   const canvas_buf = new Uint8ClampedArray(
     instance.exports.memory.buffer,
@@ -200,20 +201,11 @@ class IOHelper {
   );
   const income_reader = new IOHelper(income_buf, income_cursor_w);
 
-  const N = new DataView(
-    instance.exports.memory.buffer,
-    N_ptr,
-    4
-  );
-  console.log(N.getUint32(0, true));
-  
-
   if (0 != instance.exports.boot()) {
     return;
   }
 
   window.addEventListener("keydown", (evt) => {
-    N.setUint32(0, evt.keyCode, true);
     new MsgKeyboard(evt.keyCode, 0).write(outgo_writer);
   });
   window.addEventListener("keyup", (evt) => {
