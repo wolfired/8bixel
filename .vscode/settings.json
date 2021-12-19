@@ -3,12 +3,12 @@
         "sysroot_src": "/home/link/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library",
         "crates": [{
                 "root_module": "src/lib.rs",
-                "edition": "2018",
+                "edition": "2021",
                 "deps": [],
             },
             {
                 "root_module": "src/main.rs",
-                "edition": "2018",
+                "edition": "2021",
                 "deps": [],
             },
         ]

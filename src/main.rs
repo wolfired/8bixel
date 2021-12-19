@@ -1,7 +1,11 @@
 #![crate_name = "main"]
 #![crate_type = "bin"]
-#![allow(unused_imports)]
 #![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(unused_variables)]
+
+mod ring_buffer;
+use ring_buffer::RingBuffer;
 
 use std::{
     alloc::{alloc_zeroed, Layout},
@@ -13,15 +17,11 @@ use std::{
     },
 };
 
-#[derive(Debug)]
-struct Sun {
-    arr: [u8; 2],
-}
-
-enum Son {
-    A(i32),
-    B(i32),
-}
-
 fn main() {
+    let mut buf = RingBuffer::new(vec![0; 32]);
+    for i in 0..4 {
+        buf.write(&[0_u8; 9][..]);
+        buf.read(&[0_u8; 9][..]);
+    }
+    buf.info();
 }
